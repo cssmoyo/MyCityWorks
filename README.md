@@ -17,7 +17,7 @@ This project is significantly more complex than the course assignments because i
 Key features that distinguish MyCityWorks include:
 
 Multi-role authentication and authorization system.
-Role-specific dashboards for Citizens, Ward Councillors, Department Staff, Mayors, and Administrators.
+Role-specific dashboards for Residents, Ward Councillors, Department Staff, Mayors, and Administrators.
 Incident lifecycle tracking from submission to resolution.
 Evidence image uploads for incident reports.
 Department assignment and workflow management.
@@ -52,7 +52,8 @@ Reliability.
 Advanced querying capabilities
 
 User Roles
-Citizen
+
+Residents
 Register and log in securely.
 Submit incident reports.
 Upload supporting images.
@@ -129,7 +130,7 @@ Video Demonstration
 A walkthrough video demonstrating the functionality of MyCityWorks is available here:
 
 Plain Text
-[Insert YouTube Video Link]
+https://youtu.be/wVnf2fQjW3Q
 
 The video demonstrates:
 
