@@ -128,8 +128,6 @@ Public transparency reporting.
 Video Demonstration
 
 A walkthrough video demonstrating the functionality of MyCityWorks is available here:
-
-Plain Text
 https://youtu.be/wVnf2fQjW3Q
 
 The video demonstrates:
@@ -140,9 +138,9 @@ Evidence upload functionality.
 Role-based dashboards.
 Administrative controls.
 Incident workflow management.
-Author
 
-MyCityWorks Development Team
+Author
+Cassandra Moyo
 
 MyCityWorks is a municipal incident reporting and management platform designed to improve communication between residents and local government while increasing transparency, accountability, and service delivery efficiency.
 
