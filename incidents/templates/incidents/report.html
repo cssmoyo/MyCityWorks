@@ -1,0 +1,207 @@
+{% extends "incidents/layout.html" %}
+
+{% block body %}
+
+<div class="container">
+
+    <div class="card p-4 shadow-sm">
+
+        <h2 class="mb-4">Report Service Delivery Issue</h2>
+
+        <form action="{% url 'incidents:report' %}"
+              method="post"
+              enctype="multipart/form-data">
+
+            {% csrf_token %}
+
+            <div class="mb-3">
+                <label class="form-label">Issue Title</label>
+                <input
+                    type="text"
+                    name="title"
+                    class="form-control"
+                    placeholder="Enter issue title"
+                    required>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Issue Type</label>
+
+                <select
+                    name="issue_type"
+                    class="form-select"
+                    required>
+
+                    <option value="">Select Issue Type</option>
+                    <option value="pothole">Pothole</option>
+                    <option value="water">Water Leak</option>
+                    <option value="power">Power Outage</option>
+                    <option value="streetlight">Broken Streetlight</option>
+                    <option value="dumping">Illegal Dumping</option>
+                    <option value="other">Other</option>
+
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Location</label>
+
+                <input
+                    type="text"
+                    id="location"
+                    name="location"
+                    class="form-control"
+                    placeholder="Start typing an address..."
+                    autocomplete="off"
+                    required>
+
+                <div id="results" class="list-group mt-2"></div>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Description</label>
+
+                <textarea
+                    name="description"
+                    class="form-control"
+                    rows="5"
+                    placeholder="Describe the issue"
+                    required></textarea>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">
+                    Upload Photo (Optional)
+                </label>
+
+                <input
+                    type="file"
+                    name="image"
+                    class="form-control"
+                    accept="image/*">
+            </div>
+
+            <input
+                type="hidden"
+                id="latitude"
+                name="latitude">
+
+            <input
+                type="hidden"
+                id="longitude"
+                name="longitude">
+
+            <button
+                type="button"
+                class="btn btn-outline-secondary mb-3"
+                onclick="getLocation()">
+
+                Use Current Location
+
+            </button>
+
+            <br>
+
+            <button
+                type="submit"
+                class="btn btn-primary">
+
+                Submit Incident
+
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+{% endblock %}
+
+{% block script %}
+
+<script>
+
+function getLocation() {
+
+    if (navigator.geolocation) {
+
+        navigator.geolocation.getCurrentPosition(function(position) {
+
+            document.getElementById("latitude").value =
+                position.coords.latitude;
+
+            document.getElementById("longitude").value =
+                position.coords.longitude;
+
+            alert("Location captured successfully.");
+
+        });
+
+    } else {
+
+        alert("Geolocation not supported.");
+
+    }
+}
+
+const locationInput = document.getElementById("location");
+const results = document.getElementById("results");
+
+locationInput.addEventListener("input", async function () {
+
+    const query = this.value;
+
+    if (query.length < 3) {
+        results.innerHTML = "";
+        return;
+    }
+
+    try {
+
+        const response = await fetch(
+            `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}`
+        );
+
+        const data = await response.json();
+
+        results.innerHTML = "";
+
+        data.slice(0, 5).forEach(place => {
+
+            const item = document.createElement("button");
+
+            item.type = "button";
+            item.className =
+                "list-group-item list-group-item-action";
+
+            item.textContent = place.display_name;
+
+            item.onclick = function () {
+
+                locationInput.value = place.display_name;
+
+                document.getElementById("latitude").value =
+                    place.lat;
+
+                document.getElementById("longitude").value =
+                    place.lon;
+
+                results.innerHTML = "";
+            };
+
+            results.appendChild(item);
+
+        });
+
+    } catch (error) {
+
+        console.error(error);
+
+    }
+
+});
+
+</script>
+
+{% endblock %}

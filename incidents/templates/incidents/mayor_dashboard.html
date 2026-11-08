@@ -1,0 +1,90 @@
+{% extends "incidents/layout.html" %}
+
+{% block body %}
+
+<h1 class="mb-4">Mayor Dashboard</h1>
+
+<div class="row mb-4">
+
+    <div class="col-md-3">
+        <div class="card text-center shadow-sm">
+            <div class="card-body">
+                <h5>Total Incidents</h5>
+                <h2>{{ total_incidents }}</h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card text-center shadow-sm">
+            <div class="card-body">
+                <h5>Reported</h5>
+                <h2>{{ reported_incidents }}</h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card text-center shadow-sm">
+            <div class="card-body">
+                <h5>In Progress</h5>
+                <h2>{{ progress_incidents }}</h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card text-center shadow-sm">
+            <div class="card-body">
+                <h5>Resolved</h5>
+                <h2>{{ resolved_incidents }}</h2>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div class="card shadow-sm">
+    <div class="card-header">
+        Recent Incidents
+    </div>
+
+    <div class="card-body">
+
+        {% for incident in incidents %}
+
+        <div class="border-bottom pb-2 mb-2">
+
+            <h5>
+                <a href="{% url 'incidents:incident' incident.id %}">
+                    {{ incident.title }}
+                </a>
+            </h5>
+
+            <p>
+                <strong>Status:</strong>
+                {{ incident.get_status_display }}
+            </p>
+
+            <p>
+                <strong>Location:</strong>
+                {{ incident.location }}
+            </p>
+
+            <p>
+                <strong>Reporter:</strong>
+                {{ incident.reporter.username }}
+            </p>
+
+        </div>
+
+        {% empty %}
+
+        <p>No incidents found.</p>
+
+        {% endfor %}
+
+    </div>
+</div>
+
+{% endblock %}

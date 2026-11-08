@@ -1,0 +1,84 @@
+{% extends "incidents/layout.html" %}
+
+{% block body %}
+
+<div class="container">
+
+    <div class="card p-4 shadow-sm">
+
+        <h2>Create Account</h2>
+
+        {% if message %}
+        <div class="alert alert-danger">
+            {{ message }}
+        </div>
+        {% endif %}
+
+        <form method="post">
+
+            {% csrf_token %}
+
+            <div class="mb-3">
+                <input
+                    class="form-control"
+                    name="username"
+                    placeholder="Username"
+                    required>
+            </div>
+
+            <div class="mb-3">
+                <input
+                    class="form-control"
+                    name="email"
+                    type="email"
+                    placeholder="Email"
+                    required>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Account Type</label>
+
+                <select
+                    class="form-select"
+                    name="role"
+                    required>
+
+                    <option value="">Select Account Type</option>
+                    <option value="resident">Resident</option>
+
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <input
+                    class="form-control"
+                    name="password"
+                    type="password"
+                    placeholder="Password"
+                    required>
+            </div>
+
+            <div class="mb-3">
+                <input
+                    class="form-control"
+                    name="confirmation"
+                    type="password"
+                    placeholder="Confirm Password"
+                    required>
+            </div>
+
+            <button
+                type="submit"
+                class="btn btn-primary">
+
+                Register
+
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,79 @@
+{% extends "incidents/layout.html" %}
+
+{% block body %}
+
+<div class="card p-4 shadow-sm">
+
+    <h2>{{ incident.title }}</h2>
+
+    <div class="mb-3">
+        <span class="badge bg-primary">
+            {{ incident.issue_type }}
+        </span>
+
+        <span class="badge bg-secondary">
+            {{ incident.status }}
+        </span>
+    </div>
+
+    <p>
+        <strong>Location:</strong>
+        {{ incident.location }}
+    </p>
+
+    <p>
+        <strong>Description:</strong>
+    </p>
+
+    <p>{{ incident.description }}</p>
+
+    {% if incident.image %}
+        <img
+            src="{{ incident.image.url }}"
+            class="img-fluid rounded mb-3">
+    {% endif %}
+
+    <p>
+        <strong>Reported by:</strong>
+        {{ incident.reporter.username }}
+    </p>
+
+    <p>
+        <strong>Date:</strong>
+        {{ incident.created_at }}
+    </p>
+
+    <hr>
+
+<h4>Updates & Comments</h4>
+
+{% for comment in incident.comments.all %}
+
+<div class="card mb-2">
+    <div class="card-body">
+
+        <strong>
+            {{ comment.author.username }}
+        </strong>
+
+        <small class="text-muted">
+            {{ comment.created_at }}
+        </small>
+
+        <p class="mt-2">
+            {{ comment.content }}
+        </p>
+
+    </div>
+</div>
+
+{% empty %}
+
+<p>No updates yet.</p>
+
+{% endfor %}
+
+
+</div>
+
+{% endblock %}

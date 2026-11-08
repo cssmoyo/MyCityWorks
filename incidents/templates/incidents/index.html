@@ -1,0 +1,20 @@
+{% extends "incidents/layout.html" %}
+
+{% block body %}
+<h1>Welcome to MyCityWorks</h1>
+<p>Report and track service delivery issues.</p>
+
+{% for incident in incidents %}
+
+<div class="issue-card">
+
+    <h4>
+        <a href="{% url 'incidents:incident' incident.id %}">{{ incident.title }}</a>
+    </h4>
+
+    <p>{{ incident.location }}</p>
+
+</div>
+
+{% endfor %}
+{% endblock %}

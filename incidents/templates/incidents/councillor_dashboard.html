@@ -1,0 +1,207 @@
+{% extends "incidents/layout.html" %}
+
+{% block body %}
+
+<h1 class="mb-4">Ward Councillor Dashboard</h1>
+
+<div class="row mb-4">
+
+    <div class="col-md-4">
+        <div class="card text-center shadow-sm">
+            <div class="card-body">
+                <h5>Total Incidents</h5>
+                <h2>{{ total_incidents }}</h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card text-center shadow-sm">
+            <div class="card-body">
+                <h5>Open Cases</h5>
+                <h2>{{ open_incidents }}</h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card text-center shadow-sm">
+            <div class="card-body">
+                <h5>Resolved Cases</h5>
+                <h2>{{ resolved_incidents }}</h2>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<h3 class="mb-3">Reported Incidents</h3>
+
+{% for incident in incidents %}
+
+<div class="card mb-3 shadow-sm">
+
+    <div class="card-body">
+
+        <div class="d-flex justify-content-between">
+
+            <div>
+                <h5>
+                    <a href="{% url 'incidents:incident' incident.id %}">
+                        {{ incident.title }}
+                    </a>
+                </h5>
+
+                <p class="mb-1">
+                    <strong>Issue:</strong>
+                    {{ incident.issue_type }}
+                </p>
+
+                <p class="mb-1">
+                    <strong>Location:</strong>
+                    {{ incident.location }}
+                </p>
+
+                <p class="mb-1">
+                    <strong>Reporter:</strong>
+                    {{ incident.reporter.username }}
+                </p>
+
+                <p class="mb-1">
+                    <strong>Date:</strong>
+                    {{ incident.created_at }}
+                </p>
+            </div>
+
+            <div>
+
+                {% if incident.status == "reported" %}
+                <span class="badge bg-danger">{{ incident.get_status_display }}</span>
+                <button type="button" class="btn btn-warning btn-sm"> Start Review</button>
+                
+                {% elif incident.status == "reviewing" %}
+                <span class="badge bg-warning text-dark"> {{ incident.get_status_display }}</span>
+                <button type="button" class="btn btn-info btn-sm">Begin Work</button>
+                
+                {% elif incident.status == "progress" %}
+                <span class="badge bg-info">{{ incident.get_status_display }}</span>
+                <button type="button" class="btn btn-success btn-sm">Mark Resolved</button>
+                
+                {% elif incident.status == "resolved" %}
+                <span class="badge bg-success">{{ incident.get_status_display }}</span>
+                
+                {% else %}
+                <span class="badge bg-secondary">{{ incident.get_status_display }}</span>
+                
+                {% endif %}
+
+            </div>
+
+        </div>
+
+        <hr>
+
+        <form method="post" action="{% url 'incidents:update_status' incident.id %}">
+            {% csrf_token %}
+
+            <input
+                type="hidden"
+                name="incident_id"
+                value="{{ incident.id }}">
+
+            <div class="row">
+
+                <span class="badge bg-secondary">{{ incident.get_status_display }}</span>
+
+                <div class="col-md-6">
+                    <br>
+                    <select
+                        name="status"
+                        class="form-select">
+
+                        <option value="reported">
+                            Reported
+                        </option>
+
+                        <option value="reviewing">
+                            Under Review
+                        </option>
+
+                        <option value="IN_PROGRESS">
+                            In Progress
+                        </option>
+
+                        <option value="RESOLVED">
+                            Resolved
+                        </option>
+
+                    </select>
+                </div>
+
+                <div class="col-md-3">
+                    <br>
+                    <button
+                        class="btn btn-primary">
+                        Update Status
+                    </button>
+                </div>
+
+            </div>
+
+        </form>
+
+<!-- Comment Form -->
+<form method="post" action="{% url 'incidents:incident' incident.id %}">
+    {% csrf_token %}
+
+    <textarea
+        name="content"
+        class="form-control mb-2"
+        rows="3"
+        placeholder="Add update..."></textarea>
+
+    <button type="submit" class="btn btn-primary">
+        Add Comment
+    </button>
+</form>
+
+<p>Comments count: {{ incident.comments.count }}</p>
+
+{% for comment in incident.comments.all %}
+
+<div class="card mb-2">
+    <div class="card-body">
+
+        <strong>{{ comment.author.username }}</strong>
+
+        <small class="text-muted">
+            {{ comment.created_at }}
+        </small>
+
+        <p class="mt-2">
+            {{ comment.content }}
+        </p>
+        {% if user.profile.role == "councillor" %}
+
+<a href="{% url 'incidents:edit_comment' comment.id %}"
+   class="btn btn-sm btn-outline-primary">
+    Edit
+</a>
+
+{% endif %}
+
+    </div>
+</div>
+
+{% empty %}
+
+<p>No comments yet.</p>
+
+{% endfor %}
+
+</div>
+</div>
+
+{% endfor %}
+
+{% endblock %}
