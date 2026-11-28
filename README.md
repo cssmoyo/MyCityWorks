@@ -14,7 +14,7 @@ Examples of incidents that can be reported include water leaks, damaged roads, r
 
 The project was developed using Django, Bootstrap, SQLite, and Django's authentication framework. Throughout development, emphasis was placed on security, scalability, usability, and separation of responsibilities through role-based access control.
 
-Going forward, during elections residents have acess to projects, improvemnt and work done by councillors. Local government will aslo assess how well they are resolving issues and the an evalution of their service delivery.
+Future versions of MyCityWorks will provide residents with access to information on municipal projects, infrastructure improvements, and community development initiatives led by their councillors. During election periods, this information will help residents make more informed decisions. The platform will also include performance evaluation features that enable local government to assess councillors based on issue resolution rates, responsiveness, and overall service delivery effectiveness, thereby improving transparency and accountability.
 ---
 
 ## Distinctiveness and Complexity
